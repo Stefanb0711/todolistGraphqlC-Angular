@@ -1,0 +1,31 @@
+<div class="absolute bg-white border border-gray-200 rounded-md shadow-lg z-50
+            divide-y divide-gray-100 w-64"
+     [style.top.px]="y"
+     [style.left.px]="x"
+     *ngIf="x > 0 && y > 0"
+>
+  <button class="flex items-center hover:bg-gray-100 justify-between p-4 w-full text-left"
+          (click)="onContextItem1Click()">
+    <div>
+      <p class="font-semibold">
+        Option 1
+      </p>
+      <small class="block text-gray-400 text-sm">Beschreibung zu Option 1</small>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 text-gray-400">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+  </button>
+  <button class="flex items-center hover:bg-gray-100 justify-between p-4 w-full text-left"
+          (click)="onContextItem2Click()">
+    <div>
+      <p class="font-semibold">
+        Option 2
+      </p>
+      <small class="block text-gray-400 text-sm">Beschreibung zu Option 2</small>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 text-gray-400">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4"></path>
+    </svg>
+  </button>
+</div>

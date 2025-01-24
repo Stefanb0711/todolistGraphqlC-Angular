@@ -1,0 +1,6 @@
+@todListBackend_HostAddress = http://localhost:5191
+
+GET {{todListBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

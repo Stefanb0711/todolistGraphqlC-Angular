@@ -1,0 +1,8 @@
+<app-todolist-contextmenu [x]="contextMenuInfo.pageX" [y]="contextMenuInfo.pageY"></app-todolist-contextmenu>
+
+<div (contextmenu)="onRightClick($event)" (click)="openTodos()" [ngStyle]="{'margin-top': '30px'}" class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4 hover:bg-gray-200 transition-colors duration-200 border-4 border-black-500">
+  <div>
+    <div class="text-xl font-medium text-black hover:text-gray-700 transition-colors duration-200">{{title}}</div>
+    <p class="text-gray-500 hover:text-gray-700 transition-colors duration-200">{{formattedDate}}</p>
+  </div>
+</div>

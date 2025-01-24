@@ -1,0 +1,44 @@
+<!--<app-todolist-contextmenu [x]="contextMenuInfo.pageX" [y]="contextMenuInfo.pageY"></app-todolist-contextmenu>
+-->
+
+<div class="m-24 p-4 rounded-lg shadow-lg bg-white text-black border-2 border-gray-200">
+  <div class="flex" *ngIf="authServ.currentToken !== ''">
+
+  <div cdkDropList (cdkDropListDropped)="dropTodolist($event)" >
+    <div cdkDrag *ngFor="let todoList of todoServ.currentTodolists">
+      <app-todolist-element [id]="todoList.id" [date]="todoList.date" [title]="todoList.name"></app-todolist-element>
+    </div>
+    <app-input-field></app-input-field>
+  </div>
+
+
+
+  <div cdkDropList (cdkDropListDropped)="dropTodo($event)" *ngIf="todoServ.currentTodolistId !== undefined">
+
+    <div cdkDrag id="todoBlock" *ngFor="let todo of todoServ.currentTodos">
+        <app-todo-element [id]="todo.id" [content]="todo.content" [date]="todo.date"></app-todo-element>
+
+    </div>
+    <app-todo-input-field></app-todo-input-field>
+
+  </div>
+
+
+
+
+</div>
+
+
+  <div *ngIf="authServ.currentToken === ''" class="flex justify-center items-center h-screen">
+  <div class="bg-red-500 text-white font-bold rounded-lg border shadow-lg p-10">
+    {{authServ.homePageErrorMessage}}
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+
