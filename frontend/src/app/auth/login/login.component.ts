@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import {AuthenticationService} from '../../services/auth-service.service';
+//import {AuthenticationService} from '../../services/auth-service.service';
 import {LoginModel} from '../../models/login.model';
 
 import { Router } from '@angular/router';
 import {LoginResponseModel} from '../../models/LoginResponse.model';
 import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+import {AuthenticationService} from '../../services/auth-service.service';
 @Component({
   selector: 'app-login',
   standalone: false,
@@ -14,8 +15,7 @@ import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 })
 export class LoginComponent {
 
-  constructor(private authServ: AuthenticationService,
-              private router: Router) {
+  constructor(private authServ: AuthenticationService, private router: Router) {
   }
 
   errorMessage: string = '';

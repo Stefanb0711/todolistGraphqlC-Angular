@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Apollo, gql} from 'apollo-angular';
 import {LoginModel} from '../models/login.model';
 import {RegisterModel} from '../models/register.model';
 import {LoginResponseModel} from '../models/LoginResponse.model';
@@ -16,14 +15,14 @@ export class AuthenticationService {
 
   private apiUrl = 'https://localhost:7188/api/auth';
 
-  constructor(private http: HttpClient, private apollo: Apollo) {
+  constructor(private http: HttpClient/*, private apollo: Apollo*/) {
 
   }
 
   homePageErrorMessage: string = "";
   currentToken: string | null = "";
 
-
+  /*
   REGISTER_USER: any = gql`
     mutation RegisterUser($registerData: RegisterInput!) {
       registerUser(registerData: $registerData) {
@@ -42,8 +41,9 @@ export class AuthenticationService {
       }
     }
   `;
+  */
 
-
+  /*
   registerUser(username: string, password: string, passwordConfirm: string, email: string) {
     return this.apollo.mutate({
       mutation: this.REGISTER_USER,
@@ -69,6 +69,7 @@ export class AuthenticationService {
       }
     })
   }
+  */
 
   currentUserId: string = "";
 
@@ -90,6 +91,7 @@ export class AuthenticationService {
   registerUser(registerData: RegisterModel) {
       return this.http.post<RegisterResponseModel>(`${this.apiUrl}/register` , registerData);
   }
+
 
   getToken(): string | null {
     return localStorage.getItem('token');
