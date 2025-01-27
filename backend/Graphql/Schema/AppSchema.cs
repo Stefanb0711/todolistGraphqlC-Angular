@@ -1,11 +1,13 @@
-﻿namespace todListBackend.Graphql.Schema;
+﻿using todListBackend.Graphql.Mutations;
 
-public class AppSchema : Schema
+namespace todListBackend.Graphql.Schema;
+
+public class AppSchema : GraphQL.Types.Schema
 {
     public AppSchema(IServiceProvider serviceProvider)
         : base(serviceProvider)
     {
-        Query = serviceProvider.GetRequiredService<AppQuery>();
-        Mutation = serviceProvider.GetRequiredService<AppMutation>();
+        Query = serviceProvider.GetRequiredService<Query>();
+        Mutation = serviceProvider.GetRequiredService<AuthMutation>();
     }   
 }

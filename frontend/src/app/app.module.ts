@@ -18,6 +18,10 @@ import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 import { ContextmenuComponent } from './context-menues/contextmenu/contextmenu.component';
 import { TodolistContextmenuComponent } from './context-menues/todolist-contextmenu/todolist-contextmenu.component';
 import { TodoContextmenuComponent } from './context-menues/todo-contextmenu/todo-contextmenu.component';
+import {ApolloConfigModule} from './apollo-config.module';
+import {APOLLO_OPTIONS} from 'apollo-angular';
+import {HttpLink} from 'apollo-angular/http';
+import {InMemoryCache} from '@apollo/client/core';
 
 
 @NgModule({
@@ -43,20 +47,12 @@ import { TodoContextmenuComponent } from './context-menues/todo-contextmenu/todo
     FormsModule,
     CdkDropList,
     CdkDrag,
+    ApolloConfigModule
 
   ],
   providers: [
     DatePipe,
-    /*{
-      provide: APOLLO_OPTIONS,
-      useFactory: (httpLink: HttpLink) => ({
-        link: httpLink.create({
-          uri: 'https://localhost:7188/api/graphql',
-        }),
-        cache: new InMemoryCache(),
-      }),
-      deps: [HttpLink], // Wichtig für die Dependency Injection von HttpLink
-    },*/
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

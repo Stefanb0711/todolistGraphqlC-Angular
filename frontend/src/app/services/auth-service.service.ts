@@ -5,6 +5,8 @@ import {RegisterModel} from '../models/register.model';
 import {LoginResponseModel} from '../models/LoginResponse.model';
 import {RegisterResponseModel} from '../models/RegisterResponse.model';
 import {jwtDecode} from 'jwt-decode';
+import {gql} from '@apollo/client';
+import {Apollo} from 'apollo-angular';
 
 
 @Injectable({
@@ -15,7 +17,7 @@ export class AuthenticationService {
 
   private apiUrl = 'https://localhost:7188/api/auth';
 
-  constructor(private http: HttpClient/*, private apollo: Apollo*/) {
+  constructor(private http: HttpClient, private apollo: Apollo) {
 
   }
 
@@ -41,23 +43,23 @@ export class AuthenticationService {
       }
     }
   `;
-  */
 
-  /*
-  registerUser(username: string, password: string, passwordConfirm: string, email: string) {
+
+  registerUser(registrationData: RegisterModel) {
     return this.apollo.mutate({
       mutation: this.REGISTER_USER,
       variables: {
         registerData: {
-          username: username,
-          password: password,
-          passwordConfirm: passwordConfirm,
-          email: email
+          username: registrationData.username,
+          password: registrationData.password,
+          passwordConfirm: registrationData.passwordConfirm,
+          email: registrationData.email
         }
       }
     })
   }
-
+  */
+  /*
   loginUser(username: string, password: string) {
     return this.apollo.mutate({
       mutation: this.LOGIN_USER,
@@ -84,13 +86,16 @@ export class AuthenticationService {
     return this.http.get<any>(`${this.apiUrl}/get-users`);
   }
 
+
   loginUser(loginData: LoginModel) {
     return this.http.post<any>(`${this.apiUrl}/login`, loginData);
   }
 
+
+  /*
   registerUser(registerData: RegisterModel) {
       return this.http.post<RegisterResponseModel>(`${this.apiUrl}/register` , registerData);
-  }
+  }*/
 
 
   getToken(): string | null {
