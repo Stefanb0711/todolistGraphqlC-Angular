@@ -31,8 +31,7 @@ public class AuthMutation : ObjectGraphType
                     PasswordConfirm = context.GetArgument<string>("passwordConfirm")
                 };
 
-                return _authService.Register(registerData.Username, registerData.Email, registerData.Password, registerData.PasswordConfirm);
-
+                return _authService.Register(registerData);
             });
 
         Field<LoginResponseType>("login", arguments: new QueryArguments(
@@ -47,7 +46,7 @@ public class AuthMutation : ObjectGraphType
                     Password = context.GetArgument<string>("password")
                 };
                 
-                return _authService.Login(loginData.UsernameOrEmail, loginData.Password);
+                return _authService.Login(loginData);
                 
             });
 

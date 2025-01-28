@@ -5,7 +5,7 @@ import {RegisterModel} from '../models/register.model';
 import {LoginResponseModel} from '../models/LoginResponse.model';
 import {RegisterResponseModel} from '../models/RegisterResponse.model';
 import {jwtDecode} from 'jwt-decode';
-import {gql} from '@apollo/client';
+import gql from 'graphql-tag';
 import {Apollo} from 'apollo-angular';
 
 
@@ -15,7 +15,7 @@ import {Apollo} from 'apollo-angular';
 export class AuthenticationService {
 
 
-  private apiUrl = 'https://localhost:7188/api/auth';
+  private apiUrl = 'https://localhost:7188/graphql';
 
   constructor(private http: HttpClient, private apollo: Apollo) {
 
@@ -24,7 +24,6 @@ export class AuthenticationService {
   homePageErrorMessage: string = "";
   currentToken: string | null = "";
 
-  /*
   REGISTER_USER: any = gql`
     mutation RegisterUser($registerData: RegisterInput!) {
       registerUser(registerData: $registerData) {
@@ -33,6 +32,7 @@ export class AuthenticationService {
       }
     }
   `;
+
 
   LOGIN_USER: any = gql`
     mutation LoginUser ($loginData: LoginInput!){
@@ -43,7 +43,6 @@ export class AuthenticationService {
       }
     }
   `;
-
 
   registerUser(registrationData: RegisterModel) {
     return this.apollo.mutate({
@@ -58,6 +57,9 @@ export class AuthenticationService {
       }
     })
   }
+
+
+  /*
   */
   /*
   loginUser(username: string, password: string) {

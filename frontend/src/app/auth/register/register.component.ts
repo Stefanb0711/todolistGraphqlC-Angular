@@ -24,15 +24,19 @@ export class RegisterComponent {
   errorMessage: string = "";
 
 
-  constructor(private authServ: AuthenticationService, private router: Router) {
+  constructor(private authServ: AuthenticationService,
+              private router: Router) {
   }
 
 
   submitRegistration() {
     console.log("Submit wird ausgeführt");
-    /*
+
+
+
     this.authServ.registerUser(this.registrationData).subscribe({
       next: (res : any) => {
+        
         if (res.success){
           console.log(res);
 
@@ -42,12 +46,13 @@ export class RegisterComponent {
         }
 
       },
-      error: (error: RegisterResponseModel) => {
+      error: (error: any) => {
+        console.log("Fehler bei der Registreirung");
         this.errorMessage = error.message;
       }
 
     });
-      */
+
 
   }
 

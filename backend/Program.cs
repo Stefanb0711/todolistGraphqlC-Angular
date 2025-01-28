@@ -4,17 +4,22 @@ using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using todListBackend.Graphql.Types;
 using todoList.Services;
 using todoList.Models;
 using todListBackend.Services;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using HotChocolate.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<HelloQuery>();
 
-builder.Services.AddScoped<Query>();
-builder.Services.AddScoped<ISchema, Schema>(sp => new Schema { Query = sp.GetRequiredService<Query>() });
+builder.Services.AddGraphQLServer().AddQueryType<HelloQuery>();
+
 
 
 builder.Services.AddCors(options =>
@@ -52,10 +57,11 @@ builder.Services.AddScoped<TokenValidationFilter>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+app.MapGraphQL();
 
 /*
 app.UseGraphQL<ISchema>();
@@ -65,7 +71,7 @@ app.UseGraphQLPlayground("/playground");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    //app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();

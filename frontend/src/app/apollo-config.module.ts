@@ -3,7 +3,7 @@ import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 
-const uri = 'https://localhost:4200/graphql'; // Ersetzen Sie dies mit Ihrem GraphQL-Endpunkt
+const uri = 'https://localhost:7188/graphql'; // Ersetzen Sie dies mit Ihrem GraphQL-Endpunkt
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
     link: httpLink.create({ uri }),
