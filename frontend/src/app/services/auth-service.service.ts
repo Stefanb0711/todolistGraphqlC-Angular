@@ -42,17 +42,46 @@ export class AuthenticationService {
   currentToken: string | null = "";
 
 
+  async registerUser(registerData: RegisterModel) {
 
-
-
-  REGISTER_USER: any = gql`
-    mutation RegisterUser($registrationData: RegisterModel!) {
-      registerUser(registrationData: $registrationData) {
+    const mutation = `
+    mutation RegisterUser($username: String!, $email: String!,
+     $password: String!, $passwordConfirm: String!) {
+      registerUser(registrationData: {
+        username: $username,
+        email: $email,
+        password: $password,
+        passwordConfirm: $passwordConfirm
+      }) {
         success
         message
       }
     }
-  `;
+    `;
+
+    const variables = {
+      username: registerData.username,
+      email: registerData.email,
+      password: registerData.password,
+      passwordConfirm: registerData.passwordConfirm,
+    };
+
+    try {
+      const data = await this.client.request(mutation, variables);
+      return data;
+    } catch (error) {
+      console.error('Fehler bei der Mutation:', error);
+      throw error;
+
+    }
+  };
+
+
+
+
+
+
+
 
 
   LOGIN_USER: any = gql`
@@ -65,42 +94,14 @@ export class AuthenticationService {
     }
   `;
 
-  HELLO_QUERY: any = gql`
-    query {
-      hello
-    }`;
 
 
-    queryHello() {
-    return this.apollo.query({
-      query: gql`
-        query {
-          hello
-        }
-      `,
-      fetchPolicy: 'no-cache' // Cache deaktivieren
-    });
-  };
 
 
-  registerUser(registrationData: RegisterModel) {
-    return this.apollo.mutate({
-      mutation: this.REGISTER_USER,
-      variables: {
-        registrationData: {
-          username: registrationData.username,
-          password: registrationData.password,
-          passwordConfirm: registrationData.passwordConfirm,
-          email: registrationData.email
-        }
-      }
-    });
-  };
+
 
 
   /*
-  */
-
   loginUser(loginData: LoginModel) {
     return this.apollo.mutate({
       mutation: this.LOGIN_USER,
@@ -112,7 +113,7 @@ export class AuthenticationService {
       }
     })
   }
-
+  */
 
   currentUserId: string = "";
 
@@ -127,16 +128,6 @@ export class AuthenticationService {
     return this.http.get<any>(`${this.apiUrl}/get-users`);
   }
 
-  /*
-  loginUser(loginData: LoginModel) {
-    return this.http.post<any>(`${this.apiUrl}/login`, loginData);
-  }
-  */
-
-  /*
-  registerUser(registerData: RegisterModel) {
-      return this.http.post<RegisterResponseModel>(`${this.apiUrl}/register` , registerData);
-  }*/
 
 
   getToken(): string | null {

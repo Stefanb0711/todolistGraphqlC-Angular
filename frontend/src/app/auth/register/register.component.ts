@@ -24,17 +24,36 @@ export class RegisterComponent {
   errorMessage: string = "";
 
 
+  registerUserResponse : any | null = null;
+
   constructor(private authServ: AuthenticationService,
               private router: Router) {
   }
 
 
-  submitRegistration() {
+  async submitRegistration() {
     console.log("Submit wird ausgeführt");
 
+    try {
+      const response: any = await this.authServ.registerUser(this.registrationData);
+      console.log("Response of registrationMessage: ");
+      this.registerUserResponse = response.registerUser.message;
+    } catch (error) {
+      console.error("Fehler:", error);
+    }
+
+      //data.registerUser.message ? this.router.navigate(['/']) : this.errorMessage = data.registerUser.message;
+
+      /*if (data.registerUser && data.registerUser.message) {
 
 
-    this.authServ.registerUser(this.registrationData).subscribe({
+        this.router.navigate(['/'])
+      }*/
+
+
+
+    /*
+      .subscribe({
       next: (res : any) => {
         console.log("Response of registration", res);
         if (res && res.success) {
@@ -49,7 +68,7 @@ export class RegisterComponent {
       }
 
     });
-
+    */
 
   }
 

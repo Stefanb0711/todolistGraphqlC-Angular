@@ -61,7 +61,6 @@ export class HomeComponent implements OnInit{
 
     this.authServ.getHello().then(data => {
       this.helloQueryAnswer = data.hello; // Zugriff auf das Ergebnis der Anfrage
-
     })
       .catch(error => {
         console.error('Fehler:', error);

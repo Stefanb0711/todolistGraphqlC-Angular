@@ -32,16 +32,11 @@ export class LoginComponent {
   onLoginSubmit() {
 
     console.log("loginData: ", this.loginData);
-
+    /*
     this.authServ.loginUser(this.loginData).subscribe({
       next: (res: any) => {
 
-        /*
-        console.log("Login erfolgreich");
-        console.log("ApiResponse: " + res);
-        console.log("Der aktuelle Token: ", res.token);
-        console.log("Die aktuelle Message: " + res.message);
-        */
+
 
         localStorage.setItem('token', res.token)
 
@@ -56,6 +51,7 @@ export class LoginComponent {
 
     });
 
+  */
   }
 
 
