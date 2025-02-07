@@ -22,6 +22,7 @@
     "@apollo/client": "^3.12.7",
     "apollo-angular": "^8.0.0",
     "autoprefixer": "^10.4.20",
+    "graphql-request": "^7.1.2",
     "jwt-decode": "^4.0.0",
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",

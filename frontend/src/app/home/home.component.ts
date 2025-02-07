@@ -37,11 +37,6 @@ export class HomeComponent implements OnInit{
 
   ngOnInit() {
 
-    const query = `
-    query {
-      hello
-    }
-  `;
 
     /*
     fetch('https://localhost:7188/graphql', { // Ersetzen Sie dies durch Ihre GraphQL-Endpoint-URL
@@ -64,16 +59,15 @@ export class HomeComponent implements OnInit{
     */
 
 
-    this.authServ.queryHello().subscribe({
-      next: (res: any) => {
+    this.authServ.getHello().then(data => {
+      this.helloQueryAnswer = data.hello; // Zugriff auf das Ergebnis der Anfrage
 
-        this.helloQueryAnswer = res;
-        console.log("HelloQueryAnswer: ", res );
-      },
-      error: (err: any) => {
-        console.error("Error executing Query: ", err);
-      }
-    });
+    })
+      .catch(error => {
+        console.error('Fehler:', error);
+        // Fehlerbehandlung hier implementieren
+      });
+
 
 
 

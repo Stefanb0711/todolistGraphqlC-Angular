@@ -7,22 +7,43 @@ import {RegisterResponseModel} from '../models/RegisterResponse.model';
 import {jwtDecode} from 'jwt-decode';
 import {Apollo, gql} from 'apollo-angular';
 import {map} from 'rxjs';
-
+import { GraphQLClient } from 'graphql-request';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
 
+  private client: GraphQLClient;
+
 
   private apiUrl = 'https://localhost:7188/graphql';
 
   constructor(private http: HttpClient, private apollo: Apollo) {
+    this.client = new GraphQLClient(this.apiUrl);
+  }
+
+  async getHello(): Promise<any> {
+    const query = `
+    query {
+      hello
+    }`;
+    try {
+      const data = await this.client.request(query);
+      return data;
+    } catch (error) {
+      console.error('Fehler bei der GraphQL-Anfrage:', error);
+      throw error; // Oder behandeln Sie den Fehler anders
+    }
 
   }
 
   homePageErrorMessage: string = "";
   currentToken: string | null = "";
+
+
+
+
 
   REGISTER_USER: any = gql`
     mutation RegisterUser($registrationData: RegisterModel!) {
