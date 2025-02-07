@@ -6,6 +6,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef } from '@angular/core';
 import {TodoModel} from '../models/Todo.model';
 import {ContextmenuComponent} from '../context-menues/contextmenu/contextmenu.component';
+import {Apollo, gql} from 'apollo-angular';
 
 
 @Component({
@@ -27,14 +28,56 @@ export class HomeComponent implements OnInit{
     pageY: -1
   };
 
+  helloQueryAnswer: any = "";
 
   constructor(public authServ: AuthenticationService,
-              public todoServ: TodoService, private cdr: ChangeDetectorRef) {}
+              public todoServ: TodoService, private cdr: ChangeDetectorRef, private apollo: Apollo) {}
 
 
 
   ngOnInit() {
 
+    const query = `
+    query {
+      hello
+    }
+  `;
+
+    /*
+    fetch('https://localhost:7188/graphql', { // Ersetzen Sie dies durch Ihre GraphQL-Endpoint-URL
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Fügen Sie hier bei Bedarf Autorisierungsheader hinzu (z. B. 'Authorization': 'Bearer <token>')
+      },
+      body: JSON.stringify({ query })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Daten vom Server:', data); // Hier sind Ihre Daten
+        // Verarbeiten Sie die Daten hier
+      })
+      .catch(error => {
+        console.error('Fehler:', error);
+      });
+
+    */
+
+
+    this.authServ.queryHello().subscribe({
+      next: (res: any) => {
+
+        this.helloQueryAnswer = res;
+        console.log("HelloQueryAnswer: ", res );
+      },
+      error: (err: any) => {
+        console.error("Error executing Query: ", err);
+      }
+    });
+
+
+
+    /*
     if(!this.authServ.isTokenValid()) {
       this.errorMessage = "Sie müssen Sich einloggen, um ihre Todos zu sehen";
       this.authServ.removeToken();
@@ -72,18 +115,10 @@ export class HomeComponent implements OnInit{
       }
     });
 
-    /*
-    this.authServ.getUsers().subscribe({
-    next : (res: any)=> {
-      console.log(res);
-    }, error: (err: any) => {
-      console.log("Fehler bei nutzer bekommen");
-      }
-    })
     */
 
-
   }
+
 
 
   dropTodolist(event: CdkDragDrop<TodolistModel[]>) {

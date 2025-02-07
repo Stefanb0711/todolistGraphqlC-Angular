@@ -1,12 +1,9 @@
-﻿using GraphQL.Types;
+﻿using GraphQL;
 
 namespace todListBackend.Graphql.Types;
 
-public class LoginInput: InputObjectGraphType
+public class LoginInput
 {
-    public LoginInput()
-    {
-        Field<StringGraphType>("usernameOrEmail");
-        Field<StringGraphType>("password");
-    }
+    public string UsernameOrEmail { get; set; }
+    public string Password { get; set; }
 }

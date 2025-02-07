@@ -5,8 +5,8 @@ import {RegisterModel} from '../models/register.model';
 import {LoginResponseModel} from '../models/LoginResponse.model';
 import {RegisterResponseModel} from '../models/RegisterResponse.model';
 import {jwtDecode} from 'jwt-decode';
-import gql from 'graphql-tag';
-import {Apollo} from 'apollo-angular';
+import {Apollo, gql} from 'apollo-angular';
+import {map} from 'rxjs';
 
 
 @Injectable({
@@ -25,9 +25,9 @@ export class AuthenticationService {
   currentToken: string | null = "";
 
   REGISTER_USER: any = gql`
-    mutation RegisterUser($registerData: RegisterInput!) {
-      registerUser(registerData: $registerData) {
-        status
+    mutation RegisterUser($registrationData: RegisterModel!) {
+      registerUser(registrationData: $registrationData) {
+        success
         message
       }
     }
@@ -35,45 +35,63 @@ export class AuthenticationService {
 
 
   LOGIN_USER: any = gql`
-    mutation LoginUser ($loginData: LoginInput!){
+    mutation LoginUser ($loginData: LoginModel!){
       loginUser(loginData: $loginData) {
         token
-        status
+        success
         message
       }
     }
   `;
 
+  HELLO_QUERY: any = gql`
+    query {
+      hello
+    }`;
+
+
+    queryHello() {
+    return this.apollo.query({
+      query: gql`
+        query {
+          hello
+        }
+      `,
+      fetchPolicy: 'no-cache' // Cache deaktivieren
+    });
+  };
+
+
   registerUser(registrationData: RegisterModel) {
     return this.apollo.mutate({
       mutation: this.REGISTER_USER,
       variables: {
-        registerData: {
+        registrationData: {
           username: registrationData.username,
           password: registrationData.password,
           passwordConfirm: registrationData.passwordConfirm,
           email: registrationData.email
         }
       }
-    })
-  }
+    });
+  };
 
 
   /*
   */
-  /*
-  loginUser(username: string, password: string) {
+
+  loginUser(loginData: LoginModel) {
     return this.apollo.mutate({
       mutation: this.LOGIN_USER,
       variables: {
         loginData: {
-          username: username,
-          password: password
+          usernameOrEmail: loginData.usernameOrEmail,
+          password: loginData.password
         }
       }
     })
   }
-  */
+
 
   currentUserId: string = "";
 
@@ -88,11 +106,11 @@ export class AuthenticationService {
     return this.http.get<any>(`${this.apiUrl}/get-users`);
   }
 
-
+  /*
   loginUser(loginData: LoginModel) {
     return this.http.post<any>(`${this.apiUrl}/login`, loginData);
   }
-
+  */
 
   /*
   registerUser(registerData: RegisterModel) {

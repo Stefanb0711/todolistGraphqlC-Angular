@@ -87,9 +87,9 @@ public class AuthService
 				}
 				else
 				{
-					Console.WriteLine("Das Passwortfeld ist nicht ausgefüllt.");
-                    //ViewData["ErrorMessage"] = "Das Passwortfeld ist nicht ausgefüllt.";
-                    return (false, "Das Passwortfeld ist nicht ausgefüllt.", null);
+					Console.WriteLine("Das Passwortfeld ist nicht ausgefï¿½llt.");
+                    //ViewData["ErrorMessage"] = "Das Passwortfeld ist nicht ausgefï¿½llt.";
+                    return (false, "Das Passwortfeld ist nicht ausgefï¿½llt.", null);
 
                 }
 
@@ -105,7 +105,7 @@ public class AuthService
 		}
 		catch (Exception ex)
 		{
-            //ViewData["ErrorMessage"] = "Eín interner Fehler ist aufgetreten. Probieren Sie es nochmal";
+            //ViewData["ErrorMessage"] = "Eï¿½n interner Fehler ist aufgetreten. Probieren Sie es nochmal";
 
 
 			return (false, "Ein interner Fehler ist aufgetreten. Probieren Sie es nochmal", null);

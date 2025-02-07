@@ -12,14 +12,15 @@ using todListBackend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using HotChocolate.AspNetCore;
+using todListBackend.Graphql.Mutations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<HelloQuery>();
 
-builder.Services.AddGraphQLServer().AddQueryType<HelloQuery>();
-
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>().AddMutationType<Mutation>();
 
 
 builder.Services.AddCors(options =>
@@ -61,7 +62,7 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.MapGraphQL();
+app.MapGraphQL("/graphql");
 
 /*
 app.UseGraphQL<ISchema>();

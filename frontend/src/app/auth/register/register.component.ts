@@ -36,15 +36,12 @@ export class RegisterComponent {
 
     this.authServ.registerUser(this.registrationData).subscribe({
       next: (res : any) => {
-        
-        if (res.success){
-          console.log(res);
-
-          this.router.navigate(['/'])
+        console.log("Response of registration", res);
+        if (res && res.success) {
+            this.router.navigate(['/'])
         } else {
-          console.log('Registrierungsfehler', res.message);
+            console.log('Registrierungsfehler', res.message);
         }
-
       },
       error: (error: any) => {
         console.log("Fehler bei der Registreirung");

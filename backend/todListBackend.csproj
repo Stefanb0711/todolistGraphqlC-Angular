@@ -13,14 +13,17 @@
     <PackageReference Include="GraphQL.SystemTextJson" Version="8.2.1" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="14.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Graphql\Queries\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Graphql\Schema\" />
+    <Folder Include="Helpers\" />
     <Folder Include="NewFolder\" />
   </ItemGroup>
 

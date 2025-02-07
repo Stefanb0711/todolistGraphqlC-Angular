@@ -1,16 +1,9 @@
-﻿using GraphQL.Types;
+﻿namespace todListBackend.Graphql.Types;
 
-namespace todListBackend.Graphql.Types;
-
-public class RegisterInput: ObjectGraphType
+public class RegisterInput
 {
-    public RegisterInput()
-    {
-        Field<StringGraphType>("username");
-        Field<StringGraphType>("email");
-        Field<StringGraphType>("password");
-        Field<StringGraphType>("passwordConfirm");
-
-    }
-    
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public string PasswordConfirm { get; set; }
 }
