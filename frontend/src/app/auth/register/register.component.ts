@@ -38,6 +38,11 @@ export class RegisterComponent {
       const response: any = await this.authServ.registerUser(this.registrationData);
       console.log("Response of registrationMessage: ");
       this.registerUserResponse = response.registerUser.message;
+
+      if (response.registerUser.success){
+        this.router.navigate(['/login']);
+      }
+
     } catch (error) {
       console.error("Fehler:", error);
     }

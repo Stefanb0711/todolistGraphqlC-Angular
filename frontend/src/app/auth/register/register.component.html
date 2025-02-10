@@ -60,11 +60,10 @@
   </button>
 
   <!-- Fehlermeldung -->
- <p class="mt-6 text-center text-sm font-medium text-red-600 bg-red-100 p-3 rounded-lg shadow-sm" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </p>
+  <div *ngIf="registerUserResponse !== null" >
+    <p class="mt-6 text-center text-sm font-medium text-red-600 bg-red-100 p-3 rounded-lg shadow-sm">{{registerUserResponse}}</p>
+  </div>
 
-  <p class="mt-6 text-center text-sm font-medium text-red-600 bg-red-100 p-3 rounded-lg shadow-sm">RgeisterUserresponse {{registerUserResponse}}</p>
 
 </div>
 
