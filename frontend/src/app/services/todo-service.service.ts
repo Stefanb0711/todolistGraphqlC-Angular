@@ -13,7 +13,7 @@ export class TodoService {
   constructor(private httpServ: HttpClient, private authServ: AuthenticationService) {
   }
 
-  private apiUrl = "https://localhost:7188/api/todo";
+  private apiUrl = "https://localhost:7188/graphql";
 
   currentTodolists: TodolistModel[] = [];
 

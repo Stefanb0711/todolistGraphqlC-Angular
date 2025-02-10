@@ -38,34 +38,6 @@ export class HomeComponent implements OnInit{
   ngOnInit() {
 
 
-    /*
-    fetch('https://localhost:7188/graphql', { // Ersetzen Sie dies durch Ihre GraphQL-Endpoint-URL
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        // Fügen Sie hier bei Bedarf Autorisierungsheader hinzu (z. B. 'Authorization': 'Bearer <token>')
-      },
-      body: JSON.stringify({ query })
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Daten vom Server:', data); // Hier sind Ihre Daten
-        // Verarbeiten Sie die Daten hier
-      })
-      .catch(error => {
-        console.error('Fehler:', error);
-      });
-
-    */
-
-
-    this.authServ.getHello().then(data => {
-      this.helloQueryAnswer = data.hello; // Zugriff auf das Ergebnis der Anfrage
-    })
-      .catch(error => {
-        console.error('Fehler:', error);
-        // Fehlerbehandlung hier implementieren
-      });
 
 
 

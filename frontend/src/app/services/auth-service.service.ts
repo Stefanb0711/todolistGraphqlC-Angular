@@ -8,6 +8,7 @@ import {jwtDecode} from 'jwt-decode';
 import {Apollo, gql} from 'apollo-angular';
 import {map} from 'rxjs';
 import { GraphQLClient } from 'graphql-request';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class AuthenticationService {
 
   private apiUrl = 'https://localhost:7188/graphql';
 
-  constructor(private http: HttpClient, private apollo: Apollo) {
+  constructor(private router: Router, private http: HttpClient, private apollo: Apollo) {
     this.client = new GraphQLClient(this.apiUrl);
   }
 
@@ -78,26 +79,41 @@ export class AuthenticationService {
 
 
 
-
-
-
-
-
-
-  LOGIN_USER: any = gql`
-    mutation LoginUser ($loginData: LoginModel!){
-      loginUser(loginData: $loginData) {
-        token
-        success
-        message
+  async loginUser(loginData: LoginModel) {
+    const mutation = `
+    mutation LoginUser($usernameOrEmail: String!, $password: String!) {
+      loginUser(loginData: {
+        usernameOrEmail: $usernameOrEmail,
+        password: $password
+      }) {
+      success
+      message
+      token
       }
     }
-  `;
+    `;
 
+    const variables = {
+        usernameOrEmail: loginData.usernameOrEmail,
+        password: loginData.password,
+      };
 
+    try {
+        const data: any = await this.client.request(mutation, variables);
 
+        if (data.loginUser.success) {
+          const token = data.loginUser.token;
+          this.router.navigate(['/']);
+          localStorage.setItem('token', token);
+        }
 
+        return data;
+    } catch (error) {
+      console.error('Fehler bei der Query:', error);
+      throw error;
 
+    }
+  };
 
 
 

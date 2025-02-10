@@ -29,29 +29,19 @@ export class LoginComponent {
 
 
 
-  onLoginSubmit() {
+  async onLoginSubmit() {
 
     console.log("loginData: ", this.loginData);
-    /*
-    this.authServ.loginUser(this.loginData).subscribe({
-      next: (res: any) => {
 
+    try {
+      const response: any = await this.authServ.loginUser(this.loginData);
+      console.log("Response of loginMessage: ", response.loginUser.message);
+      this.errorMessage = response.loginUser.message;
 
+    } catch (error) {
+      console.error("Fehler:", error);
+    }
 
-        localStorage.setItem('token', res.token)
-
-        console.log(res.message);
-
-        this.router.navigate(['/']);
-      }, error: (err: any) => {
-        this.errorMessage = err.message;
-        console.log("Error: ", err.message);
-        console.log("Login fehlgeschlagen");
-      }
-
-    });
-
-  */
   }
 
 
