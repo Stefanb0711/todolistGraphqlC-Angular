@@ -4,21 +4,27 @@ using todoList.Services;
 using todoList.Models;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
+using todListBackend.Models;
+using todListBackend.Services;
 
 namespace todListBackend.Graphql.Mutations;
 
 public class Mutation
 {
+
+
+	private readonly TodoService _todoService;
     
     private readonly IMongoCollection<User> _users;
     private readonly JwtTokenService _jwtTokenService;
-	
     public Mutation(MongoDbService mongoDbService,
-        JwtTokenService jwtTokenService
+        JwtTokenService jwtTokenService,
+        TodoService todoService
     )
     {
         _users = mongoDbService.GetCollection<User>("users");
         _jwtTokenService = jwtTokenService;
+        _todoService = todoService;
     }
     
     public Book AddBook(string title, string authorName)
@@ -33,7 +39,119 @@ public class Mutation
 	    };
     }
     
-    public async Task<Response> RegisterUser(RegisterInput registrationData)
+    /*Beispielmutation zum Testen:
+     mutation {
+	  registerUser(registrationData: {
+	    username: "testuser",
+	    email: "test@example.com",
+	    password: "testpassword",
+	    passwordConfirm: "testpassword"
+	  }) {
+	    success
+	    message
+	  }
+	}
+     */
+
+	
+    public async Task<ResponseType> DeleteTodolist(string todolistId)
+    {
+	    return await _todoService.DeleteTodolist(todolistId);
+    }
+
+
+    public async Task<ResponseTodolistId> DeleteTodo(string todoId)
+    {
+	    
+	    return await _todoService.DeleteTodo(todoId);
+	    
+	    
+    }
+
+    public async Task<List<TodolistType>> GetAllTodolists(string currentUserId)
+    {
+	    
+	    List<Todolist> todolists = await _todoService.GetAllTodolists(currentUserId);
+	    List<TodolistType> todolistTypes = new List<TodolistType>();
+
+	    foreach (var todolist in todolists)
+	    {
+		    todolistTypes.Add(new TodolistType
+		    {
+			    Id = todolist.Id,
+			    UserId = todolist.UserId,
+			    Name = todolist.Name,
+			    Date = todolist.Date
+		    });
+	    }
+
+	    return todolistTypes;
+	    
+		
+    }
+	
+    public async Task<ResponseType> AddTodolist(AddTodolistInput input)
+    {
+	    var todoListData = new Todolist
+	    {
+		    Id = input.Id,
+		    UserId = input.UserId,
+		    Name = input.Name,
+		    Date = input.Date
+	    };
+	    
+	    var response = await _todoService.AddTodolist(todoListData);
+	    
+	    return new ResponseType
+	    {
+		    Success = response.Success,
+		    Message = response.Message
+	    };
+	    
+    }
+
+    public async Task<ResponseType> AddTodo(AddTodoInput todo)
+    {
+	    var todoData = new TodoModel
+	    {
+		    Id = todo.Id,
+		    Content = todo.Content,
+		    Date = todo.Date,
+		    TodolistId = todo.TodolistId
+	    };
+	    
+	    
+	    
+	    var response = await _todoService.AddTodo(todoData);
+
+	    return new ResponseType
+	    {
+		    Success = response.Success,
+		    Message = response.Message
+	    };
+    }
+
+
+    public async Task<List<TodoType>> GetTodos(string todolistId)
+    {
+	    List<TodoModel> todos = await _todoService.GetTodos(todolistId);
+	    List<TodoType> todoType = new List<TodoType>();
+
+	    foreach (var todo in todos)
+	    {
+		    todoType.Add(new TodoType
+		    {
+			    Id = todo.Id,
+			    Content = todo.Content,
+			    Date = todo.Content,
+			    TodolistId = todo.TodolistId
+		    });
+	    }
+		
+	    return todoType;
+    }
+    
+    public async Task<ResponseType> RegisterUser(RegisterInput registrationData)
     {
 	    
 	    Console.WriteLine("In der Registerfunktion");
@@ -41,7 +159,7 @@ public class Mutation
         if (registrationData.Password != registrationData.PasswordConfirm)
         {
 	        
-	        return new Response { Success = false, Message = "Passwords do not match" };
+	        return new ResponseType { Success = false, Message = "Passwords do not match" };
 	        
             /*
             ViewData["ErrorMessage"] = "Passwords do not match";
@@ -70,7 +188,7 @@ public class Mutation
 
 	        if (count > 0)
 	        {
-		        return new Response
+		        return new ResponseType
 		        {
 			        Success = false,
 			        Message = "Email oder Benutzername ist schon vergeben"
@@ -102,17 +220,28 @@ public class Mutation
 	        _users.InsertOne(newUser);
 
 
-	        return new Response {Success = true, Message = "Erfolgreich registriert" };
+	        return new ResponseType {Success = true, Message = "Erfolgreich registriert" };
 	        
         } catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            return new Response {Success = false, Message = ex.Message};
+            return new ResponseType {Success = false, Message = ex.Message};
 			
         }
 
     }
     
+    /*
+    mutation {
+	    loginUser(loginData: {
+		    usernameOrEmail: "testuser",
+		    password: "testpassword"
+	    }) {
+		    success
+			    message
+		    token
+	    }
+    }*/
     public async Task<LoginResponse> LoginUser(LoginInput loginData)
     {
 	    if (loginData == null)
@@ -208,6 +337,8 @@ public class Mutation
         
 		return new LoginResponse {Success = true, Message = "Erfolgreicher Login", Token = null};
     }
+    
+    
     
     
 }

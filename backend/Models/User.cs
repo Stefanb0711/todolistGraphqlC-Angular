@@ -13,6 +13,6 @@ namespace todoList.Models
 
         public string Password { get; set; }
 
-        public List<TodolistModel> Todos { get; set; }
+        public List<Todolist> Todos { get; set; }
     }
 }

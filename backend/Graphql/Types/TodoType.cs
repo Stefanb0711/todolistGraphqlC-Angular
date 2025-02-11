@@ -1,8 +1,9 @@
-﻿namespace todListBackend.Models;
+﻿namespace todListBackend.Graphql.Types;
 
-public class TodoModel
+public class TodoType
 {
     public string? Id {get;set;}
+    
     public string Content { get; set;}
     
     public string Date { get; set;}

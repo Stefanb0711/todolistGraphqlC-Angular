@@ -24,7 +24,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="Graphql\Schema\" />
     <Folder Include="Helpers\" />
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

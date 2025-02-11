@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using todListBackend.Graphql.Types;
 using todListBackend.Models;
 using todListBackend.Services;
 
@@ -34,11 +35,11 @@ namespace todListBackend.Controllers
 
             try
             {
-                var (success, message, todolistId) = await _todoService.DeleteTodo(todoId);
+                ResponseTodolistId response = await _todoService.DeleteTodo(todoId);
 
-                if (success)
+                if (response.Success)
                 {
-                    var currentTodos = await _todoService.GetTodos(todolistId);
+                    var currentTodos = await _todoService.GetTodos(response.TodolistId);
 
                     return Ok(currentTodos);
                 }
@@ -65,9 +66,9 @@ namespace todListBackend.Controllers
             
             try
             {
-                var (success, message) = await _todoService.DeleteTodolist(todolistId);
+                var response = await _todoService.DeleteTodolist(todolistId);
 
-                if (success)
+                if (response.Success)
                 {
                     var todoLists = await _todoService.GetAllTodolists(userId);
                     
@@ -117,7 +118,7 @@ namespace todListBackend.Controllers
 
        
 
-
+        /*
         [HttpPost("add-todolist")]
         public async Task<IActionResult> AddTodoList([FromBody] TodolistModelFromFrontend todoList)
         {
@@ -125,15 +126,15 @@ namespace todListBackend.Controllers
             
             Console.WriteLine("In Add-Todolistroute");
             
-            var (success, message) = await _todoService.AddTodolist(todoList);
+            ResponseType response = await _todoService.AddTodolist(todoList);
 
-            Console.WriteLine("AddTodolist Message: " + message);
-            Console.WriteLine("AddTodolist Success: " + success);
+            Console.WriteLine("AddTodolist Message: " + response.Message);
+            Console.WriteLine("AddTodolist Success: " + response.Success);
 
             var userId = HttpContext.Items["UserId"] as string;
             
 
-            if (success)
+            if (response.Success)
             {
 
                 var allTodoLists = await _todoService.GetAllTodolists(userId);
@@ -142,20 +143,22 @@ namespace todListBackend.Controllers
                 
             }
 
-            return BadRequest(new {Message = message}); 
+            return BadRequest(new {Message = response.Message}); 
             
 
         }
 
+        */
+        
         [HttpPost("add-todo")]
         public async Task<IActionResult> AddTodoElement([FromBody] TodoModel todo)
         {
             Console.WriteLine("Todo welches hinzugefügt werden soll: " + todo);
 
+            
+            var response = await _todoService.AddTodo(todo);
 
-            var (success, message) = await _todoService.AddTodo(todo);
-
-            if(success)
+            if(response.Success)
             {
                 var allTodos = await _todoService.GetTodos(todo.TodolistId);
 
@@ -164,7 +167,7 @@ namespace todListBackend.Controllers
 
 
 
-            return BadRequest(new { Message = message });
+            return BadRequest(new { Message = response.Message });
 
         }
 

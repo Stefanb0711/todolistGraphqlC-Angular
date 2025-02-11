@@ -1,6 +1,6 @@
-﻿namespace todListBackend.Models;
+﻿namespace todListBackend.Graphql.Types;
 
-public class TodoModel
+public class AddTodoInput
 {
     public string? Id {get;set;}
     public string Content { get; set;}
