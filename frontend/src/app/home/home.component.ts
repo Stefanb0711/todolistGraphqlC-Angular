@@ -40,9 +40,6 @@ export class HomeComponent implements OnInit{
 
 
 
-
-
-    /*
     if(!this.authServ.isTokenValid()) {
       this.errorMessage = "Sie müssen Sich einloggen, um ihre Todos zu sehen";
       this.authServ.removeToken();
@@ -64,6 +61,7 @@ export class HomeComponent implements OnInit{
     });
 
 
+    /*
     this.todoServ.getAllTodoLists().subscribe({
       next: (res: any) => {
         //console.log("Die Todos der aktuellen Userid: ", res["todoList"]["result"]);

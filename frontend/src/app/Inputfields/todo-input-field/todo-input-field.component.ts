@@ -26,6 +26,18 @@ export class TodoInputFieldComponent {
 
     this.newTodo.todolistId = this.todoServ.currentTodolistId;
 
+    try {
+      const response: any = this.todoServ.addTodo(this.newTodo);
+      if (response.success) {
+        this.todoServ.currentTodolists = response.allTodolists
+      } else {
+        this.todoServ.todoErrors = response.message;
+      }
+    } catch (error) {
+
+    }
+  }
+    /*
     this.todoServ.addTodo(this.newTodo).subscribe({
       next: (res: any) => {
 
@@ -37,6 +49,6 @@ export class TodoInputFieldComponent {
       }
     })
   }
-
+  */
 
 }

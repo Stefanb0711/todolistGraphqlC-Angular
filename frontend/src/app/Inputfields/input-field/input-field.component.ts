@@ -35,8 +35,17 @@ export class InputFieldComponent {
 
     this.newTodoList.userId = this.authServ.currentUserId;
 
-
     console.log("Todo welches hinzugefügt werden soll: ", this.newTodoList);
+
+
+    try {
+      const response: any = this.todoServ.addTodolist(this.newTodoList);
+
+    } catch (error) {
+
+    }
+
+    /*
     this.todoServ.addTodolist(this.newTodoList).subscribe({
       next: (res: any) => {
         console.log("Antwort von Api beim hinzufügen von Todo: ", res);
@@ -47,6 +56,7 @@ export class InputFieldComponent {
         console.error('Error adding todo');
       }
     })
+    */
 
   }
 

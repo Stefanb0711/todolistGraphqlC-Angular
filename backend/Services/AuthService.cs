@@ -6,6 +6,8 @@ using todoList.Services;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http.HttpResults;
 using MongoDB.Bson;
+using todListBackend.Graphql.Types;
+using todListBackend.Models;
 
 
 /*
@@ -187,6 +189,39 @@ public class AuthService
 
     }
 
+	public async Task<GetUserIdResponse> GetUserId(TokenRequest request)
+	{
+		Console.WriteLine("Der Token in GetUseIdRoute" + request);
+		try
+		{
+			var currentUserId = _jwtTokenService.GetUserIdFromJwt(request.Token);
+			
+			Console.WriteLine("CurrentUserId: " + currentUserId);	
 
+			//response: GetUserIdResponse = new GetUserIdResponse();
+
+			return new GetUserIdResponse
+			{
+				UserId = currentUserId
+			};
+			
+			
+			
+			//return Ok(new {CurrentUserId = currentUserId });
+		}
+		catch (Exception ex)
+		{
+
+			return new GetUserIdResponse
+			{
+				UserId = null,
+				Message = ex.Message,
+				Success = false
+			};
+			
+			//return BadRequest(ex.Message);
+		}
+		
+	}
 
 }

@@ -43,8 +43,6 @@ public class AuthController : ControllerBase
 			return BadRequest(ex.Message);
 		}
 
-
-
 	}
 
     [HttpPost("login")]

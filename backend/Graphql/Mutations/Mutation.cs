@@ -17,14 +17,19 @@ public class Mutation
     
     private readonly IMongoCollection<User> _users;
     private readonly JwtTokenService _jwtTokenService;
+    
+    private readonly AuthService _authService;
+    
     public Mutation(MongoDbService mongoDbService,
         JwtTokenService jwtTokenService,
-        TodoService todoService
+        TodoService todoService,
+        AuthService authService
     )
     {
         _users = mongoDbService.GetCollection<User>("users");
         _jwtTokenService = jwtTokenService;
         _todoService = todoService;
+        _authService = authService;
     }
     
     public Book AddBook(string title, string authorName)
@@ -90,7 +95,7 @@ public class Mutation
 		
     }
 	
-    public async Task<ResponseType> AddTodolist(AddTodolistInput input)
+    public async Task<ResponseAddTodolistType> AddTodolist(AddTodolistInput input)
     {
 	    var todoListData = new Todolist
 	    {
@@ -101,13 +106,46 @@ public class Mutation
 	    };
 	    
 	    var response = await _todoService.AddTodolist(todoListData);
-	    
-	    return new ResponseType
+
+
+	    if (response.Success)
+	    {
+		    try
+		    {
+			    List<TodolistType> updatetdTodolists = await GetAllTodolists(input.UserId);
+			    
+			    return new ResponseAddTodolistType
+			    {
+				    Success = true,
+				    AllTodolists = updatetdTodolists
+			    };
+		    }
+		    catch (Exception ex)
+		    {
+			    Console.WriteLine(ex.Message);
+			    return new ResponseAddTodolistType
+			    {
+				    Success = false,
+				    Message = "Fehler beim hinzufügen der Todolist"
+			    };
+		    }
+		    
+	    }
+
+	    return new ResponseAddTodolistType
 	    {
 		    Success = response.Success,
 		    Message = response.Message
 	    };
-	    
+
+	    /*
+	    return new ResponseType
+	    {
+		    Success = response.Success,
+		    Message = response.Message
+	    };*/
+
+
     }
 
     public async Task<ResponseType> AddTodo(AddTodoInput todo)
@@ -337,8 +375,24 @@ public class Mutation
         
 		return new LoginResponse {Success = true, Message = "Erfolgreicher Login", Token = null};
     }
-    
-    
+
+    public async Task<GetUserIdResponse> GetUserId(TokenInput tokenData)
+    {
+	     var convertetTokenData  = new TokenRequest
+	     {
+		     Token = tokenData.Token
+	     };
+	    
+	    try {
+		   GetUserIdResponse response = await _authService.GetUserId(convertetTokenData);
+		   return response;
+	    }
+	    catch (Exception e)
+	    {
+		    Console.WriteLine(e);
+		    throw;
+	    }
+    }
     
     
 }

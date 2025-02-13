@@ -32,6 +32,15 @@ export class TodoContextmenuComponent {
   }
 
   onDeleteClick() {
+
+    try {
+      const response: any = this.todoServ.deleteTodo();
+
+    } catch (error: any) {
+
+    }
+
+    /*
     this.todoServ.deleteTodo().subscribe({
       next : (res: any) => {
         this.todoServ.currentTodos = res;
@@ -40,6 +49,9 @@ export class TodoContextmenuComponent {
 
       }
     })
+    */
+
+
   }
 
 }

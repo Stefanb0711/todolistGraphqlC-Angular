@@ -5,7 +5,7 @@ import {TodolistModel} from '../models/Todolist.model';
 import {AuthenticationService} from './auth-service.service';
 import {TodoModel} from '../models/Todo.model';
 import {GraphQLClient} from 'graphql-request';
-import {variable} from '@angular/compiler';
+//import {variable} from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +28,7 @@ export class TodoService {
   currentTodolistId: string | undefined;
   currentTodoId: string | undefined;
 
+  todoErrors: string | null = null;
 
   async deleteTodolist() {
     const mutation = `
@@ -92,15 +93,40 @@ export class TodoService {
   }
   */
 
-  async addTodo(){
+  async addTodo(todo: TodoModel){
     const mutation = `
-      mutation AddTodo($todo
+      mutation AddTodo($content: String!, $date: String!, $todolistId: String!) {
+        addTodo(todo: {
+          content: $content,
+          date: $date,
+          todolistId: $todolistId
+        }) {
+          success
+          message
+        }
+      }
     `;
+
+    const variables = {
+      content: todo.content,
+      todolistId: todo.todolistId,
+      date: todo.date
+    };
+
+    try {
+        const data: any = await this.client.request(mutation, variables);
+        return data;
+      } catch (error) {
+        console.error('Fehler bei der Mutation:', error);
+        throw error;
+      }
+
   }
 
+  /*
   addTodo(todo: TodoModel) {
     return this.httpServ.post<any>(`${this.apiUrl}/add-todo`, todo);
-  }
+  }*/
 
   async addTodolist(todolist: TodolistModel) {
     const mutation = `
@@ -132,10 +158,11 @@ export class TodoService {
 
   }
 
+  /*
   addTodolist(todo: TodolistModel) {
       // Add logic here
       return this.httpServ.post<any>(`${this.apiUrl}/add-todolist`, todo);
-  }
+  }*/
 
 
 

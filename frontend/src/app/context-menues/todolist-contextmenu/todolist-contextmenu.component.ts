@@ -54,7 +54,14 @@ export class TodolistContextmenuComponent {
 
     this.newTodo.todolistId = this.todoServ.currentTodolistId;
 
-    this.todoServ.addTodo(this.newTodo).subscribe({
+
+    try {
+      const response: any = this.todoServ.addTodo(this.newTodo);
+    } catch (error : any ) {
+      console.error("Fehler beim binzufügen von Todo: ", this.newTodo);
+    }
+
+    /*this.todoServ.addTodo(this.newTodo).subscribe({
       next: (res: any) => {
 
         console.log("Antwort beim hinzufügen von neuem Todo: ", res);
@@ -63,13 +70,22 @@ export class TodolistContextmenuComponent {
       }, error: (res: any) => {
         console.log("Fehler beim Hinzufügen von neuem Todo");
       }
-    })
+    })*/
 
 
   }
 
 
   onDeleteClick() {
+
+    try {
+      const response: any = this.todoServ.deleteTodolist();
+    } catch (error: any) {
+
+    }
+
+
+    /*
     this.todoServ.deleteTodolist().subscribe({
       next: (res: any) => {
         this.todoServ.currentTodolists = res;
@@ -77,6 +93,8 @@ export class TodolistContextmenuComponent {
 
       }
     })
+    */
+
   }
 
 
