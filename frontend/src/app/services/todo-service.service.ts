@@ -128,28 +128,54 @@ export class TodoService {
     return this.httpServ.post<any>(`${this.apiUrl}/add-todo`, todo);
   }*/
 
+  /*
+     mutation {
+    addTodolist(input: { id: "TO_DO_LIST_ID",
+    userId: "USER_ID",
+     name: "Name der To-Do-Liste", date: 1647312000000 }) {
+      success
+      message
+      allTodolists {
+        id
+        userId
+        name
+        date
+      }
+    }
+  }
+*/
+
+
+
   async addTodolist(todolist: TodolistModel) {
     const mutation = `
-      mutation AddTodolist($userId: String! , $name: String!  , $date: Number!){
-        addTodoList(input: {
-          userId: $userId,
-          name: $name,
-          date: $date
-          }) {
+      mutation AddTodolist($input: AddTodolistInput!) {
+        addTodolist(input: $input) {
           success
           message
+          allTodolists {
+            id
+            userId
+            name
+            date
+          }
         }
       }
     `;
 
     const variables = {
-      userId: todolist.userId,
-      name: todolist.name,
-      date: todolist.date
+      input: {
+        id: todolist.id,
+        userId: todolist.userId,
+        name: todolist.name,
+        date: todolist.date
+      }
+
     };
 
     try {
       const data: any = await this.client.request(mutation, variables);
+      console.log("Antwort beim hinzufügen der Todolist: : ", data);
       return data;
     } catch (error) {
       console.error('Fehler bei der Mutation:', error);
@@ -157,6 +183,8 @@ export class TodoService {
     }
 
   }
+
+
 
   /*
   addTodolist(todo: TodolistModel) {
@@ -167,15 +195,25 @@ export class TodoService {
 
 
   async getAllTodoLists() {
-    const query = `
-      query GetAllTodolists {
-        getAllTodolists() {
-
-        }
+    const mutation = `
+    mutation GetAllTodolists($currentUserId: String!) {
+      getAllTodolists(currentUserId: $currentUserId) {
+        id
+        userId
+        name
+        date
       }
-    `;
+    }`;
+
+    const variables = {
+      currentUserId: this.authServ.currentUserId
+    };
+
     try {
-      const data: any = await this.client.request(query);
+      const data: any = await this.client.request(mutation, variables);
+      this.currentTodolists = data.getAllTodolists;
+      console.log("Antwort von GetAllTodolists : ", data);
+
       return data;
     } catch (error) {
       console.error('Fehler bei der Query:', error);

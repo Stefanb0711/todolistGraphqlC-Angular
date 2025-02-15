@@ -155,6 +155,8 @@ export class AuthenticationService {
     return localStorage.removeItem('token');
 
   }
+
+  /*
   getCurrentUserId() {
 
     const body = {
@@ -163,7 +165,36 @@ export class AuthenticationService {
 
     return this.http.post<string>(`${this.apiUrl}/get-userid`, body);
   }
+  */
 
+  async getCurrentUserId() {
+    const mutation = `
+      mutation GetUserId($token: String!) {
+        getUserId(tokenData: {
+          token: $token
+      }) {
+      success
+      message
+      userId
+      }
+    }
+    `;
+
+    const variables = {
+      token: this.currentToken
+    }
+
+    try {
+      const data: any = await this.client.request(mutation, variables);
+      this.currentUserId = data.getUserId.userId;
+      //console.log("currentUserId: ", this.currentUserId);
+      //return data;
+    } catch (error) {
+      console.error('Fehler bei der Mutation GetCurrentUserId:', error);
+      throw error;
+    }
+
+  }
 
    // Überprüfen, ob der Token gültig ist
   isTokenValid(): boolean {

@@ -30,7 +30,7 @@ export class InputFieldComponent {
   }
 
   //USerid to String
-  onAddTodo(){
+  async onAddTodo(){
 
 
     this.newTodoList.userId = this.authServ.currentUserId;
@@ -39,7 +39,11 @@ export class InputFieldComponent {
 
 
     try {
-      const response: any = this.todoServ.addTodolist(this.newTodoList);
+      const response: any = await this.todoServ.addTodolist(this.newTodoList);
+
+      console.log("AllTodolists: ", response.addTodolist.allTodolists);
+      //this.todoLists = response.addTodolist.allTodolists.getAllTodolists;
+      this.todoServ.currentTodolists = response.addTodolist.allTodolists
 
     } catch (error) {
 

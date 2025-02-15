@@ -12,7 +12,7 @@ namespace todListBackend.Graphql.Mutations;
 public class Mutation
 {
 
-
+	
 	private readonly TodoService _todoService;
     
     private readonly IMongoCollection<User> _users;
@@ -58,13 +58,13 @@ public class Mutation
 	}
      */
 
-	
+    [GraphQLName("deleteTodolist")]
     public async Task<ResponseType> DeleteTodolist(string todolistId)
     {
 	    return await _todoService.DeleteTodolist(todolistId);
     }
 
-
+    [GraphQLName("deleteTodo")]
     public async Task<ResponseTodolistId> DeleteTodo(string todoId)
     {
 	    
@@ -73,6 +73,7 @@ public class Mutation
 	    
     }
 
+    [GraphQLName("getAllTodolists")]
     public async Task<List<TodolistType>> GetAllTodolists(string currentUserId)
     {
 	    
@@ -92,11 +93,13 @@ public class Mutation
 
 	    return todolistTypes;
 	    
-		
     }
 	
+    [GraphQLName("addTodolist")]
     public async Task<ResponseAddTodolistType> AddTodolist(AddTodolistInput input)
     {
+	   
+	    
 	    var todoListData = new Todolist
 	    {
 		    Id = input.Id,
@@ -117,6 +120,7 @@ public class Mutation
 			    return new ResponseAddTodolistType
 			    {
 				    Success = true,
+				    Message = "Erfolgreich Todolist hinzugefügt",
 				    AllTodolists = updatetdTodolists
 			    };
 		    }
@@ -132,6 +136,7 @@ public class Mutation
 		    
 	    }
 
+	    
 	    return new ResponseAddTodolistType
 	    {
 		    Success = response.Success,
@@ -147,7 +152,9 @@ public class Mutation
 
 
     }
-
+	
+    
+    [GraphQLName("addTodo")]
     public async Task<ResponseType> AddTodo(AddTodoInput todo)
     {
 	    var todoData = new TodoModel
@@ -169,7 +176,7 @@ public class Mutation
 	    };
     }
 
-
+	[GraphQLName("getTodos")]
     public async Task<List<TodoType>> GetTodos(string todolistId)
     {
 	    List<TodoModel> todos = await _todoService.GetTodos(todolistId);
@@ -189,6 +196,7 @@ public class Mutation
 	    return todoType;
     }
     
+    [GraphQLName("registerUser")]
     public async Task<ResponseType> RegisterUser(RegisterInput registrationData)
     {
 	    
@@ -280,6 +288,7 @@ public class Mutation
 		    token
 	    }
     }*/
+    [GraphQLName("loginUser")]
     public async Task<LoginResponse> LoginUser(LoginInput loginData)
     {
 	    if (loginData == null)
@@ -376,11 +385,15 @@ public class Mutation
 		return new LoginResponse {Success = true, Message = "Erfolgreicher Login", Token = null};
     }
 
+    [GraphQLName("getUserId")]
     public async Task<GetUserIdResponse> GetUserId(TokenInput tokenData)
     {
-	     var convertetTokenData  = new TokenRequest
+	    Console.WriteLine("In der GetUserIdfunktion: Die Token sind: " + tokenData.Token);
+	    
+
+	    var convertetTokenData  = new TokenRequest
 	     {
-		     Token = tokenData.Token
+		     Token = tokenData.Token 
 	     };
 	    
 	    try {
@@ -389,9 +402,11 @@ public class Mutation
 	    }
 	    catch (Exception e)
 	    {
-		    Console.WriteLine(e);
-		    throw;
+		    
+		    return new GetUserIdResponse {Success = false, Message = "Fehler beim bekommen der UserId"};
 	    }
+	    
+	    
     }
     
     

@@ -35,10 +35,7 @@ export class HomeComponent implements OnInit{
 
 
 
-  ngOnInit() {
-
-
-
+  async ngOnInit() {
 
     if(!this.authServ.isTokenValid()) {
       this.errorMessage = "Sie müssen Sich einloggen, um ihre Todos zu sehen";
@@ -51,6 +48,24 @@ export class HomeComponent implements OnInit{
 
     console.log("CurrentUserId beim aufrufen von Home: ",this.authServ.currentUserId);
 
+    //Userid bekommen
+    try {
+      await this.authServ.getCurrentUserId();
+      //console.log("Response of getCurrentUserId: ", response);
+    } catch (error) {
+      console.error("Fehler: ", error);
+    }
+
+
+    try {
+      const response = await this.todoServ.getAllTodoLists();
+      return response;
+
+    } catch (error) {
+      console.error("Fehler: ", error);
+    }
+
+    /*
     this.authServ.getCurrentUserId().subscribe({
       next: (res: any) => {
         this.authServ.currentUserId = res["currentUserId"];
@@ -59,7 +74,7 @@ export class HomeComponent implements OnInit{
         console.log("Fehler bei nutzerid bekommen");
       }
     });
-
+    */
 
     /*
     this.todoServ.getAllTodoLists().subscribe({
