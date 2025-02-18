@@ -1,4 +1,5 @@
-﻿using todListBackend.Graphql.Types;
+﻿using GraphQL.Validation.Rules;
+using todListBackend.Graphql.Types;
 using MongoDB.Driver;
 using todoList.Services;
 using todoList.Models;
@@ -114,9 +115,9 @@ public class Mutation
 	    if (response.Success)
 	    {
 		    try
-		    {
+		   	{
 			    List<TodolistType> updatetdTodolists = await GetAllTodolists(input.UserId);
-			    
+			
 			    return new ResponseAddTodolistType
 			    {
 				    Success = true,
@@ -124,7 +125,7 @@ public class Mutation
 				    AllTodolists = updatetdTodolists
 			    };
 		    }
-		    catch (Exception ex)
+			catch (Exception ex)
 		    {
 			    Console.WriteLine(ex.Message);
 			    return new ResponseAddTodolistType
@@ -152,28 +153,57 @@ public class Mutation
 
 
     }
-	
+    
     
     [GraphQLName("addTodo")]
-    public async Task<ResponseType> AddTodo(AddTodoInput todo)
+    public async Task<ResponseAddTodo> AddTodo(AddTodoInput todo)
     {
+	    Console.WriteLine("In der AddTodroute");
+	    
 	    var todoData = new TodoModel
 	    {
-		    Id = todo.Id,
+		    Id = ObjectId.GenerateNewId().ToString(),
 		    Content = todo.Content,
-		    Date = todo.Date,
+		    //Date = todo.Date,
 		    TodolistId = todo.TodolistId
 	    };
 	    
-	    
-	    
 	    var response = await _todoService.AddTodo(todoData);
-
-	    return new ResponseType
+	    
+	    
+	    if (response.Success)
 	    {
-		    Success = response.Success,
-		    Message = response.Message
+		    Console.WriteLine("Todo erfolgreich hinzugefügt.");
+		    
+		    try {
+				List<TodoType> responseGetTodo = await GetTodos(todoData.TodolistId);
+
+				return new ResponseAddTodo
+				{
+					Success = true,
+					Message = "Todo erfolgreich hinzugefügt",
+					Todos = responseGetTodo
+				};
+				
+
+		    } catch (Exception e) {
+				Console.WriteLine(e.Message);
+				return new ResponseAddTodo
+				{
+					Success = false,
+					Message = "Fehler beim Todo hinzufügen"
+				};
+
+			}
+		    
+	    }
+
+	    return new ResponseAddTodo
+	    {
+		    Message = "Fehler beim Todo hinzufügen",
+		    Success = false
 	    };
+
     }
 
 	[GraphQLName("getTodos")]
@@ -188,7 +218,7 @@ public class Mutation
 		    {
 			    Id = todo.Id,
 			    Content = todo.Content,
-			    Date = todo.Content,
+			    //Date = todo.Content,
 			    TodolistId = todo.TodolistId
 		    });
 	    }

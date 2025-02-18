@@ -6,7 +6,7 @@ public class TodoType
     
     public string Content { get; set;}
     
-    public string Date { get; set;}
+    public long? Date { get; set;}
     
     public string TodolistId { get; set; }
 }

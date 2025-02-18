@@ -5,6 +5,7 @@ import {TodolistModel} from '../models/Todolist.model';
 import {AuthenticationService} from './auth-service.service';
 import {TodoModel} from '../models/Todo.model';
 import {GraphQLClient} from 'graphql-request';
+import {data} from 'autoprefixer';
 //import {variable} from '@angular/compiler';
 
 @Injectable({
@@ -95,31 +96,43 @@ export class TodoService {
 
   async addTodo(todo: TodoModel){
     const mutation = `
-      mutation AddTodo($content: String!, $date: String!, $todolistId: String!) {
-        addTodo(todo: {
-          content: $content,
-          date: $date,
-          todolistId: $todolistId
-        }) {
+      mutation AddTodo($todo: AddTodoInput!) {
+        addTodo(todo: $todo) {
           success
           message
+          todos {
+            id,
+            content,
+            todolistId
+          }
         }
       }
     `;
 
     const variables = {
-      content: todo.content,
-      todolistId: todo.todolistId,
-      date: todo.date
+      todo: {
+        content: todo.content,
+        todolistId: todo.todolistId,
+        //date: todo.date
+      }
     };
 
     try {
         const data: any = await this.client.request(mutation, variables);
+        console.log("AddTodo Response: ", data);
+        if (data.addTodo.success) {
+          this.currentTodos = data.addTodo.todos;
+          console.log("CurrentTodos: ", this.currentTodos);
+        } else {
+          this.todoErrors = data.addTodo.message;
+        }
         return data;
-      } catch (error) {
-        console.error('Fehler bei der Mutation:', error);
-        throw error;
-      }
+    } catch (error) {
+      console.error('Fehler bei der Mutation:', error);
+      throw error;
+    }
+
+
 
   }
 
@@ -222,16 +235,51 @@ export class TodoService {
 
   }
 
+
+  async getTodos() {
+    const mutation = `
+      mutation GetTodos($todolistId: String!) {
+        getTodos(todolistId: $todolistId) {
+          id
+          content
+          date
+          todolistId
+        }
+      }
+    `;
+
+    const variables = {
+      todolistId: this.currentTodolistId
+    };
+
+    try {
+      const data: any = await this.client.request(mutation, variables);
+
+      this.currentTodos = data.getTodos;
+      console.log("Response von GetTodos: ", data);
+
+      return data;
+
+    } catch (error) {
+
+    }
+
+  }
+
   /*
   getAllTodoLists() {
       return this.httpServ.get<any>(`${this.apiUrl}/get-all-todolists`);
   }*/
 
+
+
+
+  /*
   getAllTodos() {
     const payload = {todolistId: this.currentTodolistId};
 
     return this.httpServ.post<any>(`${this.apiUrl}/get-todos`, payload);
   }
-
+  */
 
 }

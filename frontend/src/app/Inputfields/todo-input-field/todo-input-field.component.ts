@@ -15,27 +15,22 @@ export class TodoInputFieldComponent {
   }
 
   newTodo: TodoModel = {
-    id: "",
+    id: undefined,
     content: "",
     todolistId: "",
     date: undefined
   };
 
 
-  onAddTodo() {
+  async onAddTodo() {
 
     this.newTodo.todolistId = this.todoServ.currentTodolistId;
 
-    try {
-      const response: any = this.todoServ.addTodo(this.newTodo);
-      if (response.success) {
-        this.todoServ.currentTodolists = response.allTodolists
-      } else {
-        this.todoServ.todoErrors = response.message;
-      }
-    } catch (error) {
+    //this.newTodo.todolistId = "67850407ad53bd22a4ebb71b";
+    //console.log("Todo welches hinzugefügt werden soll: ", this.newTodo);
 
-    }
+    const response: any = await this.todoServ.addTodo(this.newTodo);
+
   }
     /*
     this.todoServ.addTodo(this.newTodo).subscribe({

@@ -28,10 +28,13 @@ export class TodolistElementComponent implements OnInit{
   }
 
 
-  openTodos() {
-    console.log("OpenTodos aktiviert");
+  async openTodos() {
     this.todoServ.currentTodolistId = this.id;
     console.log("CurrentTodoListId: ", this.todoServ.currentTodolistId);
+
+
+
+    /*
     this.todoServ.getAllTodos().subscribe({
      next: (res: any) => {
       console.log("Alle Todos: ", res);
@@ -41,6 +44,17 @@ export class TodolistElementComponent implements OnInit{
       }
 
     });
+    */
+
+    try {
+      const response = await this.todoServ.getTodos();
+      //console.log("Response: ", response.currentTodolistId);
+
+    } catch (error) {
+
+    }
+
+
   }
 
 

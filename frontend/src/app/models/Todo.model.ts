@@ -1,5 +1,5 @@
 export interface TodoModel {
-  id: string,
+  id: string | undefined,
   content: string,
   todolistId: string | undefined,
   date: number | undefined
