@@ -54,7 +54,7 @@ export class TodolistContextmenuComponent {
 
   addNewTodoToTodoList() {
 
-    //this.newTodo.todolistId = this.todoServ.currentTodolistId;
+    this.newTodo.todolistId = this.todoServ.currentTodolistId;
 
 
     const response: any = this.todoServ.addTodo(this.newTodo);
