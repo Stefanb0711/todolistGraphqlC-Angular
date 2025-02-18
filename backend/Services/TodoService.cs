@@ -212,17 +212,8 @@ namespace todListBackend.Services
         public async Task<ResponseType> AddTodo(TodoModel todo)
         {
 
-            try
-            {
-            /*
-            var newTodo = new TodoModel
-            {
-                Id = ObjectId.GenerateNewId().ToString(),
-                Content = todo.Content,
-                Date = todo.Date,
-                TodolistId = todo.TodolistId
-            };*/
-
+            try {
+                
                 await _todoCollection.InsertOneAsync(todo);
 
                 return new ResponseType

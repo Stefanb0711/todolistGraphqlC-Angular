@@ -2,7 +2,7 @@
 -->
 <h1>Homekomponente</h1>
 <p>HelloQueryAnswer: {{helloQueryAnswer}}</p>
-<div class="m-24 p-4 rounded-lg shadow-lg bg-white text-black border-2 border-gray-200">
+<div [ngStyle]="{height: '800px'}" class="overflow-auto m-24 p-4 rounded-lg shadow-lg bg-white text-black border-2 border-gray-200">
   <div class="flex" *ngIf="authServ.currentToken !== ''">
 
   <div cdkDropList (cdkDropListDropped)="dropTodolist($event)" >
@@ -14,7 +14,7 @@
 
 
 
-  <div cdkDropList (cdkDropListDropped)="dropTodo($event)" *ngIf="todoServ.currentTodolistId !== undefined">
+  <div [ngStyle]="{height: '800px'}" class="overflow-auto" cdkDropList (cdkDropListDropped)="dropTodo($event)" *ngIf="todoServ.currentTodolistId !== undefined">
 
     <div cdkDrag id="todoBlock" *ngFor="let todo of todoServ.currentTodos">
         <app-todo-element [id]="todo.id" [content]="todo.content" [date]="todo.date"></app-todo-element>

@@ -15,7 +15,7 @@ export class TodolistContextmenuComponent {
   }
 
   newTodo: TodoModel = {
-    id: "",
+    id: undefined,
     content: "",
     todolistId: "",
     date: undefined
@@ -36,6 +36,8 @@ export class TodolistContextmenuComponent {
     // Manually added check for outside click to close menu
     this.x = -1;
     this.y = -1;
+
+
   }
 
 
@@ -52,14 +54,11 @@ export class TodolistContextmenuComponent {
 
   addNewTodoToTodoList() {
 
-    this.newTodo.todolistId = this.todoServ.currentTodolistId;
+    //this.newTodo.todolistId = this.todoServ.currentTodolistId;
 
 
-    try {
-      const response: any = this.todoServ.addTodo(this.newTodo);
-    } catch (error : any ) {
-      console.error("Fehler beim binzufügen von Todo: ", this.newTodo);
-    }
+    const response: any = this.todoServ.addTodo(this.newTodo);
+
 
     /*this.todoServ.addTodo(this.newTodo).subscribe({
       next: (res: any) => {
