@@ -75,14 +75,9 @@ export class TodolistContextmenuComponent {
   }
 
 
-  onDeleteClick() {
+  async onDeleteClick() {
 
-    try {
-      const response: any = this.todoServ.deleteTodolist();
-    } catch (error: any) {
-
-    }
-
+    await this.todoServ.deleteTodolist();
 
     /*
     this.todoServ.deleteTodolist().subscribe({

@@ -27,6 +27,8 @@ public class AuthService
 	private readonly JwtTokenService _jwtTokenService;
 	private readonly AuthService _authService;
 	
+	public string _userId;
+	
 	public AuthService(MongoDbService mongoDbService,
 		JwtTokenService jwtTokenService
 		)
@@ -195,6 +197,8 @@ public class AuthService
 		try
 		{
 			var currentUserId = _jwtTokenService.GetUserIdFromJwt(request.Token);
+			
+			_userId = currentUserId;
 			
 			Console.WriteLine("CurrentUserId: " + currentUserId);	
 

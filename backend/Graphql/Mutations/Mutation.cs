@@ -57,12 +57,42 @@ public class Mutation
 	    message
 	  }
 	}
-     */
+     */ 
 
     [GraphQLName("deleteTodolist")]
-    public async Task<ResponseType> DeleteTodolist(string todolistId)
+    public async Task<ResponseDeletetodolistType> DeleteTodolist(string todolistId)
     {
-	    return await _todoService.DeleteTodolist(todolistId);
+	    var response = await _todoService.DeleteTodolist(todolistId);
+
+	    if (response.Success)
+	    {
+		    try
+		    {
+			    List<TodolistType> updatetdTodolists = await GetAllTodolists(_authService._userId);
+				
+				
+			    return new ResponseDeletetodolistType
+			    {
+				    Success = true,
+				    Message = "Erfolgreich Todlist gelöscht",
+				    AllTodolists = updatetdTodolists
+			    };
+		    }
+		    catch (Exception ex)
+		    {
+			    return new ResponseDeletetodolistType()
+			    {
+				    Success = false,
+				    Message = ""
+			    };
+		    }
+	    }
+
+	    return new ResponseDeletetodolistType
+	    {
+		    Message = "Todliste löschen fehlgeschlagen",
+		    Success = false
+	    };
     }
 
     [GraphQLName("deleteTodo")]

@@ -31,15 +31,30 @@ export class TodoService {
 
   todoErrors: string | null = null;
 
+  /*
+    mutation {
+    deleteTodolist(todolistId: "67850407ad53bd22a4ebb71b") {
+      message
+      success
+    }
+  }*/
+
+
+
   async deleteTodolist() {
     const mutation = `
-     mutation DeleteTodolist($todolistId: String!, $password: String!) {
-      deleteTodolist($todolistId)
-     } {
-     success
-     message
-       }
-     }
+    mutation DeleteTodolist($todolistId: String!) {
+      deleteTodolist(todolistId: $todolistId) {
+        success
+        message
+        allTodolists{
+          id
+          userId
+          name
+          date
+        }
+      }
+    }
     `;
 
     const variables = {
@@ -48,7 +63,12 @@ export class TodoService {
 
     try {
       const response: any = await this.client.request(mutation, variables);
-      return response;
+      console.log("ResponseDeleteTodolist: ", response);
+      if (response.deleteTodolist.success) {
+        console.log("ResponseDeleteTodolist AllTodolists: ", response);
+
+        this.currentTodolists = response.deleteTodolist.allTodolists;
+      }
     } catch (error) {
       console.error('Fehler bei der Mutation DeleteTodolist:', error);
       throw error;
