@@ -2,7 +2,7 @@
 -->
 <h1>Homekomponente</h1>
 <p>HelloQueryAnswer: {{helloQueryAnswer}}</p>
-<div [ngStyle]="{height: '800px'}" class="overflow-auto m-24 p-4 rounded-lg shadow-lg bg-white text-black border-2 border-gray-200">
+<div [ngStyle]="{height: '800px'}" class="overflow-auto m-10 p-4 rounded-lg shadow-lg bg-white text-black border-2 border-gray-200">
   <div class="flex" *ngIf="authServ.currentToken !== ''">
 
   <div cdkDropList (cdkDropListDropped)="dropTodolist($event)" >
