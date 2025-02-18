@@ -96,10 +96,47 @@ public class Mutation
     }
 
     [GraphQLName("deleteTodo")]
-    public async Task<ResponseTodolistId> DeleteTodo(string todoId)
+    public async Task<ResponseDeleteTodoType> DeleteTodo(DeleteTodoInput todoInput)
     {
+	    var response = await _todoService.DeleteTodo(todoInput.todoId);
+		
+	    if (response.Success)
+	    {
+		    try
+		    {
+			    List<TodoType> updatedTodos = await GetTodos(todoInput.todolistId);
+
+			    return new ResponseDeleteTodoType
+			    {
+				    Success = true,
+				    Message = "Todo erolgreich gelöscht",
+				    Todos = updatedTodos
+			    };
+
+		    } catch (Exception e)
+		    {
+			    return new ResponseDeleteTodoType
+			    {
+				    Message = "Fehler beim Löschen des Todos",
+				    Success = false
+			    };
+		    }
+	    }
+
+	    return new ResponseDeleteTodoType
+	    {
+		    Message = "Fehler beim Löschen des Todos",
+		    Success = false
+	    };
 	    
-	    return await _todoService.DeleteTodo(todoId);
+	    try
+	    {
+			
+	    }
+	    catch (Exception e)
+	    {
+		    
+	    }
 	    
 	    
     }

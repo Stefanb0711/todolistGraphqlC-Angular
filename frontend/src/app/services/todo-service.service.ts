@@ -79,22 +79,32 @@ export class TodoService {
 
   async deleteTodo() {
     const mutation = `
-    mutation DeleteTodo($todoId: String!) {
-      deleteTodo($todoId){
+    mutation DeleteTodo($todoInput: DeleteTodoInput!) {
+      deleteTodo(todoInput: $todoInput){
         success
         message
         todolistId
+        todos {
+          id
+          content
+          date
+          todolistId
+        }
       }
     }
     `;
 
-
     const variables = {
-      todoId: this.currentTodoId
+      todoInput: {
+        todoId: this.currentTodoId,
+        todolistId: this.currentTodolistId
+      },
     };
 
     try {
       const response: any = await this.client.request(mutation, variables);
+      console.log("Response DeleteTodo: ", response);
+      this.currentTodos = response.deleteTodo.todos;
       return response;
     } catch (error) {
       console.error('Fehler bei der Query');
