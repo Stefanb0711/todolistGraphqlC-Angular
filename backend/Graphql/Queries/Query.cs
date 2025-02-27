@@ -4,7 +4,7 @@ using todListBackend.Services;
 
 public class Query
 {
-
+    
     private readonly TodoService _todoService;
 
     public Query(TodoService todoService)

@@ -1,6 +1,3 @@
-using GraphQL;
-using GraphQL.Server;
-using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
