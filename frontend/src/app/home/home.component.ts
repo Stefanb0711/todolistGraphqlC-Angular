@@ -23,6 +23,8 @@ export class HomeComponent implements OnInit{
 
   errorMessage: string = "";
 
+
+
   contextMenuInfo: any = {
     pageX: -1,
     pageY: -1
@@ -35,7 +37,11 @@ export class HomeComponent implements OnInit{
 
 
 
+
   async ngOnInit() {
+
+
+    this.authServ.tokenValid = this.authServ.isTokenValid();
 
     if(!this.authServ.isTokenValid()) {
       this.errorMessage = "Sie müssen Sich einloggen, um ihre Todos zu sehen";

@@ -6,17 +6,17 @@
 
   <!-- Navigation Links (Right) -->
   <div class="space-x-4">
-    <div *ngIf="authServ.currentToken !== ''">
+    <div *ngIf="authServ.currentToken !== '' && authServ.tokenValid">
       <button (click)="onLogoutClick()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
       Logout
       </button>
     </div>
 
-    <div *ngIf="authServ.currentToken === '' ">
-      <button (click)="onLoginClick()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <div *ngIf="authServ.currentToken === '' || !authServ.tokenValid ">
+      <button [ngStyle]="{marginRight: '20px'}" (click)="onLoginClick()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
       Login
     </button>
-    <button (click)="onRegisterClick()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+    <button [ngStyle]="{marginRight: '20px'}" (click)="onRegisterClick()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
       Register
     </button>
     </div>

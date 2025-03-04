@@ -131,6 +131,7 @@ export class AuthenticationService {
   }
   */
 
+  tokenValid: boolean = false;
   currentUserId: string = "";
 
   emptyLogin: LoginModel = {
